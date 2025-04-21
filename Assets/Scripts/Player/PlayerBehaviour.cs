@@ -14,25 +14,39 @@ public class PlayerBehaviour : EntityBehaviour
     [SerializeField] private string _xAxisName = "xAxis";
     [SerializeField] private string _zAxisName = "zAxis";
 
+    [Header("General")]
+    [SerializeField] private int _dmg = 10;
+
     [Header("Inputs")]
     [SerializeField] private KeyCode _attackKey = KeyCode.Mouse0;
     [SerializeField] private KeyCode _interactKey = KeyCode.F;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
 
     [Header("Physics")]
-    [SerializeField] private float _groundRayDistance = 0.25f;
-    [SerializeField] private LayerMask _groundRayMask;
+    [SerializeField] private float _attackDistance = 5.0f;
+    [SerializeField] private LayerMask _attackMask;
+    [SerializeField] private float _attackRadius = 1.0f;
+    [SerializeField] private float _groundDistance = 0.5f;
+    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private float _interactDistance = 1.0f;
+    [SerializeField] private LayerMask _interactMask;
+    [SerializeField] private float _interactRadius = 0.33f;
     [SerializeField] private float _jumpForce = 5.0f;
     [SerializeField] private float _moveSpeed = 3.5f;
+    [SerializeField] private Transform _rayOrigin;
 
     private bool _isGrounded = true;
 
-    private Vector3 _dir = new(), _posOffset = new();
+    private Vector3 _dir = new(), _dirFix = new(), _camForwardFix = new(), _camRightFix = new(), _posOffset = new();
 
     private Animator _animator;
+    private CameraController _cam;
     private Rigidbody _rb;
+    private Transform _camTransform;
 
-    private Ray _groundRay;
+    private Ray _attackRay, _groundRay, _interactRay;
+    private RaycastHit _interactHit;
+    private RaycastHit[] _attackHits;
 
     public override void Awake()
     {
@@ -45,6 +59,14 @@ public class PlayerBehaviour : EntityBehaviour
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
+    public override void Start()
+    {
+        base.Start();
+
+        _camTransform = Camera.main.transform;
+        _cam = Camera.main.GetComponentInParent<CameraController>();
+    }
+
     public override void Update()
     {
         base.Update();
@@ -55,8 +77,6 @@ public class PlayerBehaviour : EntityBehaviour
         _animator.SetFloat(_zAxisName, _dir.z);
 
         _isGrounded = IsGrounded();
-
-        Debug.Log($"Is grounded? {_isGrounded}.");
 
         _animator.SetBool(_airBoolName, !_isGrounded);
         _animator.SetBool(_moveBoolName, _dir.sqrMagnitude != 0.0f);
@@ -88,23 +108,41 @@ public class PlayerBehaviour : EntityBehaviour
 
     public void Attack()
     {
-        Debug.Log($"Player attack.");
+        _attackRay = new Ray(_rayOrigin.position, transform.forward);
+
+        _attackHits = Physics.SphereCastAll(_attackRay, _attackRadius, _attackDistance, _attackMask);
+
+        foreach(RaycastHit hit in _attackHits)
+        {
+            if(hit.collider.TryGetComponent(out EntityBehaviour entity))
+            {
+                entity.TakeDamage(_dmg);
+            }
+        }
     }
 
     public void Interact()
     {
-        Debug.Log($"Player interact.");
+        _interactRay = new Ray(_rayOrigin.position, transform.forward);
+
+        if(Physics.SphereCast(_interactRay, _interactRadius, out _interactHit, _interactDistance, _interactMask))
+        {
+            if(_interactHit.collider.TryGetComponent(out IInteraction interaction))
+            {
+                interaction.OnInteraction();
+            }
+        }
     }
 
     private bool IsGrounded()
     {
         _posOffset = new Vector3(transform.position.x,
-                                 transform.position.y + (_groundRayDistance / 3.33f),
+                                 transform.position.y + 0.1f,
                                  transform.position.z);
 
         _groundRay = new Ray(_posOffset, -transform.up);
 
-        return Physics.Raycast(_groundRay, _groundRayDistance, _groundRayMask);
+        return Physics.Raycast(_groundRay, _groundDistance, _groundMask);
     }
 
     private void Jump()
@@ -114,6 +152,27 @@ public class PlayerBehaviour : EntityBehaviour
 
     private void Movement(Vector3 dir)
     {
-        _rb.MovePosition(transform.position + dir.normalized * _moveSpeed * Time.fixedDeltaTime);
+        _camForwardFix = _camTransform.forward;
+        _camRightFix = _camTransform.right;
+
+        _camForwardFix.y = 0.0f;
+        _camRightFix.y = 0.0f;
+
+        Rotate(_camForwardFix);
+
+        _dirFix = (_camRightFix * dir.x + _camForwardFix * dir.z).normalized;
+
+        _rb.MovePosition(transform.position + _dirFix * _moveSpeed * Time.fixedDeltaTime);
     }
+
+    private void Rotate(Vector3 dir)
+    {
+        transform.forward = dir;
+    }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawLine(_posOffset, _groundRay.direction * _groundDistance);
+    //}
 }

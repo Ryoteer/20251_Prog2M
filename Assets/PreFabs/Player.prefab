@@ -275,7 +275,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4565884009001823619, guid: 321afe31a2e313341811909c71aa8c9e, type: 3}
+  - {fileID: 2100000, guid: eed25bfd05270964ebababdded1ee0b9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -648,6 +648,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4833851881312259570}
+  - {fileID: 315039888575527491}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &968024167210917187
@@ -698,7 +699,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &8545963427596660259
 MonoBehaviour:
@@ -720,15 +721,26 @@ MonoBehaviour:
   _moveBoolName: isMoving
   _xAxisName: xAxis
   _zAxisName: zAxis
+  _dmg: 10
   _attackKey: 323
   _interactKey: 102
   _jumpKey: 32
-  _groundRayDistance: 0.25
-  _groundRayMask:
+  _attackDistance: 5
+  _attackMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _groundDistance: 0.5
+  _groundMask:
     serializedVersion: 2
     m_Bits: 1073741824
+  _interactDistance: 1.5
+  _interactMask:
+    serializedVersion: 2
+    m_Bits: 536870912
+  _interactRadius: 0.33
   _jumpForce: 7.5
   _moveSpeed: 4.5
+  _rayOrigin: {fileID: 315039888575527491}
 --- !u!1 &3096626800001875944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,6 +1480,37 @@ Transform:
   - {fileID: 8502315403380538530}
   m_Father: {fileID: 2260990306964388422}
   m_LocalEulerAnglesHint: {x: 66.44274, y: -4.2036595, z: -10.755777}
+--- !u!1 &6039875742162803527
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 315039888575527491}
+  m_Layer: 3
+  m_Name: Ray Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &315039888575527491
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6039875742162803527}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5751316429575611122}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6087463002545145645
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,7 +2331,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -840037777384891287, guid: 321afe31a2e313341811909c71aa8c9e, type: 3}
+  - {fileID: 2100000, guid: 4811b8b32bdabd1439b8d342cc1b21e4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
