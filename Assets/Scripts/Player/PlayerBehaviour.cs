@@ -21,6 +21,7 @@ public class PlayerBehaviour : EntityBehaviour
     [SerializeField] private KeyCode _attackKey = KeyCode.Mouse0;
     [SerializeField] private KeyCode _interactKey = KeyCode.F;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
+    [SerializeField] private KeyCode _menuKey = KeyCode.Escape;
 
     [Header("Physics")]
     [SerializeField] private float _attackDistance = 5.0f;
@@ -93,6 +94,11 @@ public class PlayerBehaviour : EntityBehaviour
         {
             _animator.SetTrigger(_jumpTriggerName);
             Jump();
+        }
+
+        if (Input.GetKeyDown(_menuKey))
+        {
+            AsyncLoadManager.Instance.LoadScene("MainMenu");
         }
     }
 
