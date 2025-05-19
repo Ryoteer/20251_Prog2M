@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Components")]
-    [SerializeField] private Transform _target;
-
     [Header("Cursor")]
     [SerializeField] private CursorLockMode _lockMode = CursorLockMode.Locked;
     [SerializeField] private bool _isCursorVisible = false;
@@ -27,6 +24,7 @@ public class CameraController : MonoBehaviour
     private Vector3 _dir = new(), _dirTest = new(), _camPos = new();
 
     private Camera _cam;
+    private Transform _target;
 
     private Ray _camRay;
     private RaycastHit _camHit;
@@ -37,6 +35,8 @@ public class CameraController : MonoBehaviour
 
         Cursor.lockState = _lockMode;
         Cursor.visible = _isCursorVisible;
+
+        _target = GameManager.Instance.Player.PlayerHead;
 
         transform.forward = _target.forward;
 

@@ -721,14 +721,17 @@ MonoBehaviour:
   _moveBoolName: isMoving
   _xAxisName: xAxis
   _zAxisName: zAxis
+  _playerHead: {fileID: 315039888575527491}
   _dmg: 10
   _attackKey: 323
   _interactKey: 102
   _jumpKey: 32
+  _menuKey: 27
   _attackDistance: 5
   _attackMask:
     serializedVersion: 2
     m_Bits: 64
+  _attackRadius: 1
   _groundDistance: 0.5
   _groundMask:
     serializedVersion: 2

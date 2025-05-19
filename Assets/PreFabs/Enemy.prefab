@@ -1482,6 +1482,37 @@ Transform:
   - {fileID: 1574312090684904598}
   m_Father: {fileID: 1776062355857993034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5103090900699489683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8513528816191536635}
+  m_Layer: 6
+  m_Name: Ray Origin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8513528816191536635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5103090900699489683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2767552794939014855}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5231654508949942640
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,6 +1875,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8819057608099251451}
   - component: {fileID: 5693551679670710265}
+  - component: {fileID: 4388746907824875314}
   m_Layer: 6
   m_Name: Y Bot
   m_TagString: Untagged
@@ -1879,7 +1911,7 @@ Animator:
   m_GameObject: {fileID: 6861984392803471934}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 321afe31a2e313341811909c71aa8c9e, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0c162a62b15734f499387ffa416f938a, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1890,6 +1922,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4388746907824875314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6861984392803471934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b95494590dc4dc9409a562d978dbf528, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7288386964523813865
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,6 +1945,7 @@ GameObject:
   - component: {fileID: 2767552794939014855}
   - component: {fileID: 4867467202113545512}
   - component: {fileID: 3891499794226131005}
+  - component: {fileID: 4672417832105530474}
   - component: {fileID: 1269753764690663938}
   m_Layer: 6
   m_Name: Enemy
@@ -1923,6 +1968,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8819057608099251451}
+  - {fileID: 8513528816191536635}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &4867467202113545512
@@ -1975,6 +2021,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!195 &4672417832105530474
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7288386964523813865}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1269753764690663938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1988,6 +2056,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHP: 100
+  _atkDistance: 2
+  _changeNodeDistance: 0.75
+  _chaseDistance: 5
+  _atkTriggerName: onAttack
+  _moveFloatName: speed
+  _dmg: 10
+  _atkRayDistance: 2
+  _atkMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _rayOrigin: {fileID: 8513528816191536635}
 --- !u!1 &7386354405576101894
 GameObject:
   m_ObjectHideFlags: 0

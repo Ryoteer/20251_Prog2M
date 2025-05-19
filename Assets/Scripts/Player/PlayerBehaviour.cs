@@ -14,6 +14,13 @@ public class PlayerBehaviour : EntityBehaviour
     [SerializeField] private string _xAxisName = "xAxis";
     [SerializeField] private string _zAxisName = "zAxis";
 
+    [Header("Camera")]
+    [SerializeField] private Transform _playerHead;
+    public Transform PlayerHead 
+    { 
+        get { return _playerHead; } 
+    }
+
     [Header("General")]
     [SerializeField] private int _dmg = 10;
 
@@ -49,8 +56,10 @@ public class PlayerBehaviour : EntityBehaviour
     private RaycastHit _interactHit;
     private RaycastHit[] _attackHits;
 
-    public override void Awake()
+    protected override void Awake()
     {
+        GameManager.Instance.Player = this;
+
         base.Awake();
 
         _animator = GetComponentInChildren<Animator>();
@@ -60,7 +69,7 @@ public class PlayerBehaviour : EntityBehaviour
         _rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
-    public override void Start()
+    protected override void Start()
     {
         base.Start();
 
@@ -68,7 +77,7 @@ public class PlayerBehaviour : EntityBehaviour
         _cam = Camera.main.GetComponentInParent<CameraController>();
     }
 
-    public override void Update()
+    protected override void Update()
     {
         base.Update();
 
@@ -102,7 +111,7 @@ public class PlayerBehaviour : EntityBehaviour
         }
     }
 
-    public override void FixedUpdate()
+    protected override void FixedUpdate()
     {
         base.FixedUpdate();
 

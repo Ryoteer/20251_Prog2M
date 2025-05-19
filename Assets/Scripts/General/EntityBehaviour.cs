@@ -10,27 +10,27 @@ public class EntityBehaviour : MonoBehaviour
     protected bool _isAlive = true;
     protected int _actualHP;
 
-    public virtual void Awake()
+    protected virtual void Awake()
     {
         _actualHP = _maxHP;
     }
 
-    public virtual void Start()
+    protected virtual void Start()
     {
 
     }
 
-    public virtual void Update()
-    {
-        if (!_isAlive) return;
-    }
-
-    public virtual void FixedUpdate()
+    protected virtual void Update()
     {
         if (!_isAlive) return;
     }
 
-    public virtual void LateUpdate()
+    protected virtual void FixedUpdate()
+    {
+        if (!_isAlive) return;
+    }
+
+    protected virtual void LateUpdate()
     {
         if (!_isAlive) return;
     }
