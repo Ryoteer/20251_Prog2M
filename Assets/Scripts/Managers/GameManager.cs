@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +23,13 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    private NavMeshSurface _navMeshSurface;
+    public NavMeshSurface NavMeshSurface
+    {
+        get { return _navMeshSurface; }
+        set { _navMeshSurface = value; }
+    }
+
     private PlayerBehaviour _player;
     public PlayerBehaviour Player 
     { 
@@ -33,5 +42,12 @@ public class GameManager : MonoBehaviour
     { 
         get { return _aiNodes; }
         set { _aiNodes = value; }
+    }
+
+    private Vector3 _actualCheckpointPosition;
+    public Vector3 ActualCheckpointPosition 
+    {
+        get { return _actualCheckpointPosition; }
+        set { _actualCheckpointPosition = value; }
     }
 }

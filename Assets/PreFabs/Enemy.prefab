@@ -2060,12 +2060,13 @@ MonoBehaviour:
   _changeNodeDistance: 0.75
   _chaseDistance: 5
   _atkTriggerName: onAttack
+  _deathTriggerName: onDeath
   _moveFloatName: speed
   _dmg: 10
   _atkRayDistance: 2
   _atkMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 8
   _rayOrigin: {fileID: 8513528816191536635}
 --- !u!1 &7386354405576101894
 GameObject:

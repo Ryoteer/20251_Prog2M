@@ -35,13 +35,22 @@ public class EntityBehaviour : MonoBehaviour
         if (!_isAlive) return;
     }
 
+    protected virtual void Death()
+    {
+        _isAlive = false;
+    }
+
     public virtual void TakeDamage(int dmg)
     {
         _actualHP -= dmg;
 
         if(_actualHP <= 0)
         {
-            _isAlive = false;
+            Death();            
+        }
+        else
+        {
+            Debug.Log($"{name}'s HP : {_actualHP}/{_maxHP}.");
         }
     }
 }

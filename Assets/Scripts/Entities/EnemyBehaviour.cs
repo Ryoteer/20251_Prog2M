@@ -12,6 +12,7 @@ public class EnemyBehaviour : EntityBehaviour
 
     [Header("Animation")]
     [SerializeField] private string _atkTriggerName = "onAttack";
+    [SerializeField] private string _deathTriggerName = "onDeath";
     [SerializeField] private string _moveFloatName = "speed";
 
     [Header("Combat")]
@@ -98,29 +99,25 @@ public class EnemyBehaviour : EntityBehaviour
     {
         _atkRay = new Ray(_rayOrigin.position, transform.forward);
 
-        if(Physics.Raycast(_atkRay, out _atkHit, _atkRayDistance, _atkMask))
+        if(Physics.SphereCast(_atkRay, 0.25f, out _atkHit, _atkRayDistance, _atkMask))
         {
-            if(_atkHit.collider.TryGetComponent(out EntityBehaviour entity))
+            if(_atkHit.collider.TryGetComponent(out PlayerBehaviour entity))
             {
                 entity.TakeDamage(_dmg);
             }
         }
     }
 
+    protected override void Death()
+    {
+        base.Death();
+
+        _animator.SetTrigger(_deathTriggerName);
+    }
+
     public override void TakeDamage(int dmg)
     {
-        _actualHP -= dmg;
-
-        if (_actualHP <= 0)
-        {
-            Debug.Log($"Pasmó {name}.");
-
-            _isAlive = false;
-        }
-        else
-        {
-            Debug.Log($"{name} recibió {dmg} puntos de daño. ({_actualHP}/{_maxHP}.)");
-        }
+        base.TakeDamage(dmg);
     }
 
     private Transform GetNewNode(Transform prevNode = null)

@@ -8,6 +8,7 @@ public class PlayerBehaviour : EntityBehaviour
     [Header("Animator")]
     [SerializeField] private string _airBoolName = "isOnAir";
     [SerializeField] private string _attackTriggerName = "onAttack";
+    [SerializeField] private string _deathTriggerName = "onDeath";
     [SerializeField] private string _interactTriggerName = "onInteract";
     [SerializeField] private string _jumpTriggerName = "onJump";
     [SerializeField] private string _moveBoolName = "isMoving";
@@ -29,6 +30,7 @@ public class PlayerBehaviour : EntityBehaviour
     [SerializeField] private KeyCode _interactKey = KeyCode.F;
     [SerializeField] private KeyCode _jumpKey = KeyCode.Space;
     [SerializeField] private KeyCode _menuKey = KeyCode.Escape;
+    [SerializeField] private KeyCode _resetKey = KeyCode.R;
 
     [Header("Physics")]
     [SerializeField] private float _attackDistance = 5.0f;
@@ -53,8 +55,7 @@ public class PlayerBehaviour : EntityBehaviour
     private Transform _camTransform;
 
     private Ray _attackRay, _groundRay, _interactRay;
-    private RaycastHit _interactHit;
-    private RaycastHit[] _attackHits;
+    private RaycastHit _attackHit, _interactHit;
 
     protected override void Awake()
     {
@@ -72,6 +73,8 @@ public class PlayerBehaviour : EntityBehaviour
     protected override void Start()
     {
         base.Start();
+
+        GameManager.Instance.ActualCheckpointPosition = transform.position;
 
         _camTransform = Camera.main.transform;
         _cam = Camera.main.GetComponentInParent<CameraController>();
@@ -109,6 +112,10 @@ public class PlayerBehaviour : EntityBehaviour
         {
             AsyncLoadManager.Instance.LoadScene("MainMenu");
         }
+        else if (Input.GetKeyDown(_resetKey))
+        {
+            transform.position = GameManager.Instance.ActualCheckpointPosition;
+        }
     }
 
     protected override void FixedUpdate()
@@ -125,15 +132,20 @@ public class PlayerBehaviour : EntityBehaviour
     {
         _attackRay = new Ray(_rayOrigin.position, transform.forward);
 
-        _attackHits = Physics.SphereCastAll(_attackRay, _attackRadius, _attackDistance, _attackMask);
-
-        foreach(RaycastHit hit in _attackHits)
+        if(Physics.SphereCast(_attackRay, _attackRadius, out _attackHit, _attackDistance, _attackMask))
         {
-            if(hit.collider.TryGetComponent(out EntityBehaviour entity))
+            if(_attackHit.collider.TryGetComponent(out EnemyBehaviour entity))
             {
                 entity.TakeDamage(_dmg);
             }
         }
+    }
+
+    protected override void Death()
+    {
+        base.Death();
+
+        _animator.SetTrigger(_deathTriggerName);
     }
 
     public void Interact()
