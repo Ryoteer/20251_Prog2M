@@ -15,6 +15,14 @@ public class PlayerBehaviour : EntityBehaviour
     [SerializeField] private string _xAxisName = "xAxis";
     [SerializeField] private string _zAxisName = "zAxis";
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource _movementSource;
+    [SerializeField] private AudioSource _actionSource;
+    [SerializeField] private AudioClip[] _attackClips;
+    [SerializeField] private AudioClip[] _dmgClips;
+    [SerializeField] private AudioClip[] _jumpClips;
+    [SerializeField] private AudioClip[] _movementClips;
+
     [Header("Camera")]
     [SerializeField] private Transform _playerHead;
     public Transform PlayerHead 
@@ -141,6 +149,16 @@ public class PlayerBehaviour : EntityBehaviour
         }
     }
 
+    public override void TakeDamage(int dmg)
+    {
+        base.TakeDamage(dmg);
+
+        if(_actualHP > 0)
+        {
+            PlayDamagedClip();
+        }
+    }
+
     protected override void Death()
     {
         base.Death();
@@ -190,6 +208,54 @@ public class PlayerBehaviour : EntityBehaviour
         _dirFix = (_camRightFix * dir.x + _camForwardFix * dir.z).normalized;
 
         _rb.MovePosition(transform.position + _dirFix * _moveSpeed * Time.fixedDeltaTime);
+    }
+
+    public void PlayAttackClip()
+    {
+        if (_actionSource.isPlaying)
+        {
+            _actionSource.Stop();
+        }
+
+        _actionSource.clip = _attackClips[Random.Range(0, _attackClips.Length)];
+
+        _actionSource.Play();
+    }
+
+    public void PlayDamagedClip()
+    {
+        if (_actionSource.isPlaying)
+        {
+            _actionSource.Stop();
+        }
+
+        _actionSource.clip = _dmgClips[Random.Range(0, _dmgClips.Length)];
+
+        _actionSource.Play();
+    }
+
+    public void PlayJumpClip(int index)
+    {
+        if (_movementSource.isPlaying)
+        {
+            _movementSource.Stop();
+        }
+
+        _movementSource.clip = _jumpClips[index];
+
+        _movementSource.Play();
+    }
+
+    public void PlayMovementClip()
+    {
+        if (_movementSource.isPlaying)
+        {
+            _movementSource.Stop();
+        }
+
+        _movementSource.clip = _movementClips[Random.Range(0, _movementClips.Length)];
+
+        _movementSource.Play();
     }
 
     private void Rotate(Vector3 dir)

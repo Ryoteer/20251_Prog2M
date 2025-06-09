@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7337534298074626224}
   - component: {fileID: 4546374402298832393}
-  m_Layer: 0
+  m_Layer: 27
   m_Name: Spring Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,7 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb42cdb6c6dbe4e4b98463738a778e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
   _lockMode: 1
   _isCursorVisible: 0
   _detectionRadius: 0.1

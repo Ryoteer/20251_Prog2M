@@ -20,4 +20,19 @@ public class PlayerAvatar : MonoBehaviour
     {
         _parent.Interact();
     }
+
+    public void PlayAttackClip()
+    {
+        _parent.PlayAttackClip();
+    }
+
+    public void PlayJumpClip(int index)
+    {
+        _parent.PlayJumpClip(index);
+    }
+
+    public void PlayMovementClip()
+    {
+        _parent.PlayMovementClip();
+    }
 }
